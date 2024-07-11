@@ -63,6 +63,7 @@ function InstallAhk {
     Expand-Archive $env:RUNNER_TOOL_CACHE\ahk2exe.zip -DestinationPath $CompilerPath -Force
 
     "$CompilerPath" | Out-File $env:GITHUB_PATH -Append
+    $env:PATH = "$CompilerPath;$env:PATH"
 
     $script:Base.32 = "$DestinationPath\AutoHotkey32.exe"
     $script:Base.64 = "$DestinationPath\AutoHotkey64.exe"
