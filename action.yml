@@ -1,0 +1,45 @@
+name: Ahk2Exe Action
+description: Compile your '.ahk' script into a standalone '.exe' using AutoHotkey's latest Ahk2Exe
+author: KamaranL
+branding:
+  icon: terminal
+  color: gray-dark
+
+inputs:
+  in:
+    description: |
+      The path and name of the script to compile.
+    required: true
+  out:
+    description: |
+      The path\name of the output '.exe' to be created.
+      Ahk2Exe defaults to the directory + basename of the 'in' file if not specified.
+  icon:
+    description: |
+      The icon file (.ico) to be used.
+      Ahk2Exe defaults to the icon of the base file used if not specified here or in the script.
+  arch:
+    description: |
+      Specifies the architecture of the base file to use.
+      One of [x86, x64]
+      Default: x64
+    default: x64
+  resource-id:
+    description: |
+      Assigns a non-standard resource ID to be used for the main script for compilations which use an .exe base file. Numeric resource IDs should consist of a hash sign (#) followed by a decimal number.
+      Ahk2Exe defaults to #1 if not specified.
+
+runs:
+  using: composite
+  steps:
+    - run: $env:GITHUB_ACTION_PATH/Pre.ps1
+      shell: pwsh
+
+    - run: $env:GITHUB_ACTION_PATH/Main.ps1
+      shell: pwsh
+      env:
+        INPUTS_ARCH: ${{ inputs.arch }}
+        INPUTS_ICON: ${{ inputs.icon }}
+        INPUTS_IN: ${{ inputs.in }}
+        INPUTS_OUT: ${{ inputs.out }}
+        INPUTS_RESOURCE_ID: ${{ inputs.resource-id }}
